@@ -1,0 +1,26 @@
+---
+- name: Include OS-specific installation tasks
+  ansible.builtin.include_tasks: "install-{{ ansible_os_family}}.yml"
+
+- name: Fail if OS Family is unsupported
+  ansible.builtin.fail:
+    msg: "Unsupported OS Family: {{ ansible_os_family }}"
+  when: ansible_os_family not in ['RedHat', 'Debian']
+
+- name: Verify Podman installation
+  ansible.builtin.command: podman --version
+  register: podman_version_check
+  changed_when: false
+
+- name: Display installed Podman version
+  ansible.builtin.debug:
+    msg: "Installed {{ podman_version_check.stdout }}"
+
+- name: Allow unprivileged port binding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_unprivileged_port_start
+    value: '1024'
+    sysctl_set: true
+    state: present
+    reload: true
+  become: true

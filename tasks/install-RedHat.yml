@@ -1,0 +1,7 @@
+---
+- name: Ensure Podman and dependencies are installed (RedHat/CentOS/Fedora/RockyLinux)
+  ansible.builtin.dnf:
+    name: "{{ ['podman'] + podman_extra_packages }}"
+    state: present
+    update_cache: yes
+  become: yes

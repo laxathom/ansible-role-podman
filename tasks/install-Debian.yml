@@ -1,0 +1,6 @@
+---
+- name: Ensure Podman and dependencies are installed (Debian/Ubuntu)
+  ansible.builtin.apt:
+    name: "{{ ['podman'] + podman_extra_packages }}"
+    state: present
+    update_cache: yes

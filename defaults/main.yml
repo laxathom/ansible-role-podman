@@ -1,0 +1,5 @@
+---
+podman_extra_packages:
+  - podman-docker
+  - buildah
+  - skopeo
